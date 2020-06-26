@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30204.135
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ColdCleartetr", "ColdCleartetr\ColdCleartetr.csproj", "{3355609C-81E8-424D-BE4D-0BEE3C0B29F7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F3506F99-8FC5-4D4D-A7D2-889DB86BF04C}"
+	ProjectSection(SolutionItems) = preProject
+		..\Cold Clear SF\Cold Clear SF\coldclearcore.cs = ..\Cold Clear SF\Cold Clear SF\coldclearcore.cs
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3355609C-81E8-424D-BE4D-0BEE3C0B29F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3355609C-81E8-424D-BE4D-0BEE3C0B29F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3355609C-81E8-424D-BE4D-0BEE3C0B29F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3355609C-81E8-424D-BE4D-0BEE3C0B29F7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{3355609C-81E8-424D-BE4D-0BEE3C0B29F7} = {F3506F99-8FC5-4D4D-A7D2-889DB86BF04C}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9F12F5EA-49EF-4C4A-9B0B-68B9FDF201F9}
+	EndGlobalSection
+EndGlobal
