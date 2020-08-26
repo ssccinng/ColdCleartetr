@@ -19,9 +19,15 @@ namespace ColdCleartetr
         int idx=0;
         bool end = false;
         bool reset = false;
-        public void newGame()
-        {
+        int garbage = 0;
+        public string botname = "ZZZTOJ";
+        double pbs;
 
+        DateTime stime;
+        long starttime = -1;
+        public async void newGame()
+        {
+            
             if (ptrBot != (IntPtr)null)
                 //return;
                 coldclearcore.cc_destroy_async(ptrBot);
@@ -49,7 +55,10 @@ namespace ColdCleartetr
 
                 cCWeights.GetType().GetField(key).SetValue(cCWeights, int.Parse(config1.AppSettings.Settings[key].Value));
             }
+            
             Configuration config = System.Configuration.ConfigurationManager.OpenExeConfiguration("ColdCleartetr.exe");
+            //botname = config.AppSettings.Settings["botname"].Value;
+            pbs = 60.0 / int.Parse( config.AppSettings.Settings["bpm"].Value);
             cCOptions.min_nodes = uint.Parse(config.AppSettings.Settings["min_nodes"].Value);
             cCOptions.pcloop = (char)(char.Parse(config.AppSettings.Settings["pcloop"].Value) - '0');
             //cCOptions.threads = ulong.Parse(config.AppSettings.Settings["threads"].Value);
@@ -77,21 +86,22 @@ namespace ColdCleartetr
 
         public async void endGame()
         {
-            
-            end = true;
-            //while (addnext || calumove) Thread.Sleep(50);
-            if (ptrBot != (IntPtr)null)
-                coldclearcore.cc_destroy_async(ptrBot);
-            addnext = false;
-            calumove = false;
-            piececnt = 0;
-            ptrBot = (IntPtr)null;
-            acv = false;
-            
+            await Task.Run(() =>
+            {
+                end = true;
+                //while (addnext || calumove) Thread.Sleep(50);
+                if (ptrBot != (IntPtr)null)
+                    coldclearcore.cc_destroy_async(ptrBot);
+                addnext = false;
+                calumove = false;
+                piececnt = 0;
+                ptrBot = (IntPtr)null;
+                acv = false;
+            });
         }
 
         int nexcnt = 0;
-        public void nextPieces(string[] pieces)
+        public async void nextPieces(string[] pieces)
         {
             
             //Console.WriteLine(ptrBot);
@@ -109,26 +119,33 @@ namespace ColdCleartetr
                     Thread.Sleep(100);
             }
             addnext = true;
-            foreach (string mino in pieces)
+            await Task.Run(() =>
             {
-                //Console.WriteLine(mino);
-                coldclearcore.cc_add_next_piece_async(ptrBot, (CCPiece)Enum.Parse(typeof(CCPiece), "CC_" + mino));
-                nexcnt--;
-                piececnt++;
-                //Thread.Sleep(100);
-            }
+                foreach (string mino in pieces)
+                {
+                    Console.WriteLine(mino);
+                    coldclearcore.cc_add_next_piece_async(ptrBot, (CCPiece)Enum.Parse(typeof(CCPiece), "CC_" + mino));
+                    nexcnt--;
+                    piececnt++;
+                    //Thread.Sleep(100);
+                }
+            });
             addnext = false;
         }
 
-        public void resetBoard(char[] field)
+        public async void resetBoard(char[] field)
         {
-            while (!acv || piececnt <= 0 || addnext || calumove) { Thread.Sleep(50); if (end) { reset = false; return; } }
+            while (!acv || addnext || calumove) { Thread.Sleep(50); if (end) { reset = false; return; } }
             reset = true;
+
             if (end)
             {
                 reset = false; return;
             }
-            coldclearcore.cc_reset_async(ptrBot ,field, (char)(0), 0);
+            await Task.Run(() =>
+            {
+                coldclearcore.cc_reset_async(ptrBot, field, (char)(0), 0);
+            });
             if (end)
             {
                 reset = false; return;
@@ -137,31 +154,64 @@ namespace ColdCleartetr
 
         } 
 
-        public CCMove nextMove()
+        public async void updategar(int gar)
+        {
+            await Task.Run(() =>
+            {
+                garbage = gar;
+            });
+            
+        }
+
+
+        public async Task< CCMove> nextMove()
         {
             //Thread.Sleep(500);
-            while (!acv || piececnt <= idx || addnext || reset) { Console.WriteLine(6); Thread.Sleep(50);if (end) { calumove = false; return new CCMove(); } }
-            calumove = true;
-            IntPtr ptrmove = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(CCMove)));
-            coldclearcore.cc_request_next_move(ptrBot, 0);
+            
+            CCMove crash = new CCMove();
+            crash.nodes = 999999999;
+            CCMove cCMove = new CCMove();
+            
+                while (!acv || piececnt <= idx + 11 || addnext || reset)
+            { Console.WriteLine(6); Console.WriteLine("end " + end); Console.WriteLine("piececnt " + piececnt); Thread.Sleep(50); if (end) { calumove = false; return crash; } }
+                calumove = true;
+                IntPtr ptrmove = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(CCMove)));
+                coldclearcore.cc_request_next_move(ptrBot, (uint) garbage);
 
-            int a;
-            if (end) { calumove = false; return new CCMove(); }
-            Console.WriteLine(1);
-            if (end) { calumove = false; return new CCMove(); }
-            while ((a = coldclearcore.cc_poll_next_move(ptrBot, ptrmove)) != 0)
-            {
-                Console.WriteLine(2);
-                Console.WriteLine("piececnt" + piececnt);
-                
-                Thread.Sleep(50);
-                if (end) { Console.WriteLine(4); calumove = false; return new CCMove(); }
-            }
+                int a;
+                if (end) { calumove = false;  return crash; }
+                Console.WriteLine(1);
+                if (end) { calumove = false; return crash; }
+            
+            await Task.Run(() => {
+                while ((a = coldclearcore.cc_poll_next_move(ptrBot, ptrmove)) != 0)
+                {
+                    Console.WriteLine(2);
+                    Console.WriteLine("piececnt" + piececnt);
+
+                    Thread.Sleep(50);
+                    if (end) { Console.WriteLine(4); calumove = false;break; }
+                }
+            });
+            if (end) { calumove = false; return crash; }
             Console.WriteLine(3);
-            CCMove cCMove = (CCMove)Marshal.PtrToStructure(ptrmove, typeof(CCMove));
+                cCMove = (CCMove)Marshal.PtrToStructure(ptrmove, typeof(CCMove));
+            Console.WriteLine(3.1);
+            Console.WriteLine("mnc " + (int)cCMove.movement_count);
             //Console.WriteLine("------" + cCMove.movement_count);
             calumove = false;
-            idx++;
+                idx++;
+            Configuration config1 = System.Configuration.ConfigurationManager.OpenExeConfiguration("ColdCleartetr.exe");
+            pbs = 60.0 / int.Parse(config1.AppSettings.Settings["bpm"].Value);
+            if (end) { calumove = false; return crash; }
+            if (starttime == -1) starttime = DateTime.Now.Ticks;
+            else
+            {
+                long nowtime = DateTime.Now.Ticks;
+                double spend = (nowtime - starttime) / 10000.0;
+                if (pbs * idx * 1000 > spend) Thread.Sleep((int)((pbs * idx) * 1000 - spend));
+            }
+            if (end) { calumove = false; return crash; }
             return cCMove;
         }
     }

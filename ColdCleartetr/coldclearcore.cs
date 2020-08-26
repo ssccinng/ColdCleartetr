@@ -105,6 +105,7 @@ namespace Cold_Clear_SF
         public uint depth;
 
         public uint original_rank;
+
     }
     [StructLayout(LayoutKind.Sequential, Pack = 2)]
     public struct CCOptions
