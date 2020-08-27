@@ -197,9 +197,9 @@ namespace zzztetr
                                 }
                                 break;
                             case 'd':
-                                temp += ",SoftDrop";
-                                Game.runmove(7);
-                                break;
+                                //temp += ",SoftDrop";
+                                //Game.runmove(7);
+                                //break;
                             case 'D':
                                 temp += ",SonicDrop";
                                 Game.runmove(4);
@@ -222,7 +222,25 @@ namespace zzztetr
                     
                     Console.WriteLine("x = " + Game.Board.piece.minopos.x);
                     Console.WriteLine("y = " + Game.Board.piece.minopos.y);
-                    
+
+                    int midx = 0;
+                    res.expected_location = new int[4][];
+
+
+                    for (int mx = 0; mx < Game.Board.piece.height; ++ mx)
+                    {
+
+                        for (int my = 0; my < Game.Board.piece.weight; ++my)
+                        {
+                            if (Game.Board.piece.minofield[mx, my] == 1) {
+                                res.expected_location[midx] = new int[2];
+                                res.expected_location[midx][0] = Game.Board.piece.minopos.y + my;
+                                res.expected_location[midx][1] = Game.Board.piece.minopos.x + mx;
+                                midx++;
+                                }
+                        }
+
+                    }
                     Game.runmove(5);
                     
                     
