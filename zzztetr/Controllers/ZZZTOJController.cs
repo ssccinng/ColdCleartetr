@@ -14,7 +14,7 @@ namespace zzztetr.Controllers
     {
         public bool hold { get; set; }
         public string[] moves { get; set; }
-        public int[][] expected_location { get; set; }
+        public int[][] expected_cells { get; set; }
 
     }
     public class postgg

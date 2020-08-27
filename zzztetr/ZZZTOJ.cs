@@ -224,7 +224,7 @@ namespace zzztetr
                     Console.WriteLine("y = " + Game.Board.piece.minopos.y);
 
                     int midx = 0;
-                    res.expected_location = new int[4][];
+                    res.expected_cells = new int[4][];
 
 
                     
@@ -236,9 +236,9 @@ namespace zzztetr
                         {
                             if (Game.Board.piece.minofield[mx, my] == 1)
                             {
-                                res.expected_location[midx] = new int[2];
-                                res.expected_location[midx][0] = Game.Board.piece.minopos.y + my;
-                                res.expected_location[midx][1] = Game.Board.piece.minopos.x + mx;
+                                res.expected_cells[midx] = new int[2];
+                                res.expected_cells[midx][0] = Game.Board.piece.minopos.y + my;
+                                res.expected_cells[midx][1] = Game.Board.piece.minopos.x + mx;
                                 midx++;
                             }
                         }
