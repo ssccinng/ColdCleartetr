@@ -76,7 +76,7 @@ namespace Jura_Knife_Tetris
         {
             if (Next_queue.Count == 0) return false;
             piece = Next_queue.Dequeue();
-            piece.setpos(19, 3);
+            piece.setpos(20, 3);
             bool isok = check_mino_ok(piece.minopos);
             isdead = !isok;
             return true;

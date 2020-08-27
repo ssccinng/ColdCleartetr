@@ -135,7 +135,7 @@ namespace Jura_Knife_Tetris
         public void reset()
         {
             setstat(0);
-            setpos(19,3);
+            setpos(20,3);
             spinlast = false;
             locked = false;
             Tspin = false;

@@ -86,8 +86,10 @@ namespace zzztetr
             //Console.WriteLine("行动！！！");
             calumove = true;
             Game.Board.Spawn_piece();
+            
             idx1++;
             resmove res = new resmove();
+            if (Game.Board.isdead) { res.moves = new string[] { "oraora" }; return res; }
             if (end) { res.moves = new string[] { "oraora" }; return res; }
             bool craasshh = false;
             Configuration config = System.Configuration.ConfigurationManager.OpenExeConfiguration("zzztetr.exe");
