@@ -227,23 +227,24 @@ namespace zzztetr
                     res.expected_location = new int[4][];
 
 
-                    for (int mx = 0; mx < Game.Board.piece.height; ++ mx)
+                    
+                    Game.runmove(5);
+                    for (int mx = 0; mx < Game.Board.piece.height; ++mx)
                     {
 
                         for (int my = 0; my < Game.Board.piece.weight; ++my)
                         {
-                            if (Game.Board.piece.minofield[mx, my] == 1) {
+                            if (Game.Board.piece.minofield[mx, my] == 1)
+                            {
                                 res.expected_location[midx] = new int[2];
                                 res.expected_location[midx][0] = Game.Board.piece.minopos.y + my;
                                 res.expected_location[midx][1] = Game.Board.piece.minopos.x + mx;
                                 midx++;
-                                }
+                            }
                         }
 
                     }
-                    Game.runmove(5);
-                    
-                    
+
                     //Console.WriteLine(temp);
                     if (temp.Length >= 1)
                         temp = temp.Substring(1);
