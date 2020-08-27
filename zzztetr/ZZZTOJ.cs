@@ -90,6 +90,7 @@ namespace zzztetr
             resmove res = new resmove();
             if (end) { res.moves = new string[] { "oraora" }; return res; }
             bool craasshh = false;
+            Configuration config = System.Configuration.ConfigurationManager.OpenExeConfiguration("zzztetr.exe");
             await Task.Run(() =>
             {
                 int[] field1 = new int[24];
@@ -118,12 +119,15 @@ namespace zzztetr
                 unsafe
                 {
                     //char[] nsq = new char[Game.Board.Next_queue.Count];
-                    char[] nsq = new char[6];
+                    int level = int.Parse(config.AppSettings.Settings["level"].Value);
+                    int nextcnt = int.Parse(config.AppSettings.Settings["nextcnt"].Value);
+                    char[] nsq = new char[nextcnt];
                     int idx = 0;
+                    
                     foreach (mino m in Game.Board.Next_queue)
                     {
                         nsq[idx++] = m.name[0];
-                        if (idx == 6) break;
+                        if (idx == nextcnt) break;
                     }
                     
 
@@ -138,7 +142,7 @@ namespace zzztetr
                     try { 
                     input = ZZZTOJcore.TetrisAI(field2, field1, 10, 22, (Game.Board.isb2b ? 1 : 0),
                         Game.Board.combo, nsq, (Game.Board.holdpiece == null ? ' ' : Game.Board.holdpiece.name[0]),
-                        true, Game.Board.piece.name[0], 3, 0, 0, true, false, ids, Game.gamerule.ren, 6, 8, 0); // 调用zzz
+                        true, Game.Board.piece.name[0], 3, 0, 0, true, false, ids, Game.gamerule.ren, nextcnt, level, 0); // 调用zzz
                     }
                     catch
                     {
@@ -193,6 +197,9 @@ namespace zzztetr
                                 }
                                 break;
                             case 'd':
+                                temp += ",SoftDrop";
+                                Game.runmove(7);
+                                break;
                             case 'D':
                                 temp += ",SonicDrop";
                                 Game.runmove(4);
@@ -234,7 +241,7 @@ namespace zzztetr
                 Console.WriteLine("spend = " + spend);
                 Console.WriteLine("pbs = " + pbs);
                 Console.WriteLine("idx = " + idx1);
-                Configuration config = System.Configuration.ConfigurationManager.OpenExeConfiguration("zzztetr.exe");
+                
 
                 pbs = 60.0 / int.Parse(config.AppSettings.Settings["bpm"].Value);
                 

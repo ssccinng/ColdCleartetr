@@ -108,6 +108,7 @@ namespace Jura_Knife_Tetris
                 case 4: Board.piece.soft_drop_floor(ref Board); break;
                 case 5: atkcnt = lock_piece_calc(); break;
                 case 6: Board.use_hold(); break;
+                case 7: Board.piece.soft_drop(ref Board); break;
                 default:
                     /*Board.piece.soft_drop_floor(ref Board);*/ break; 
             }
