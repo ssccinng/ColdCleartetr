@@ -7,7 +7,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-
+using System.Text.Json;
+// using Newtonsoft.Json;
+// using Newtonsoft.Json.Linq;
 namespace zzztetr.Controllers
 {
     public class resmove
@@ -189,7 +191,6 @@ namespace zzztetr.Controllers
             //return poststring.ToString();
         }
     }
-
     [Produces(MediaTypeNames.Application.Json)]
     [Route("[controller]")]
     [ApiController]
@@ -199,8 +200,14 @@ namespace zzztetr.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async void Post([FromBody] string[][] ids)
+        public async void Post([FromBody] dynamic gg)
         {
+            // Console.WriteLine(gg.GetRawText());
+            // Console.WriteLine(gg.GetProperty("board"));
+            string [][] ids = JsonSerializer.Deserialize<string[][]>(gg.GetProperty("board").GetRawText());
+            
+            System.Text.Json.JsonElement a = new System.Text.Json.JsonElement();
+            int cnt = gg.GetProperty("garbage").GetInt32();
             await Task.Run(() =>
             {
                 //char[] ff = new char[400];
@@ -218,6 +225,7 @@ namespace zzztetr.Controllers
                 }
 
                 bot.zzz_toj.resetBoard(ff);
+                bot.zzz_toj.updategar(cnt);
             });
         }
     }
@@ -266,5 +274,10 @@ namespace zzztetr.Controllers
             //})
             //.ToArray();
         }
+    }
+
+    public class resetjson {
+        public string[][] ids {get; set;}
+        public int cnt {get; set;}
     }
 }
