@@ -92,6 +92,7 @@ namespace zzztetr
             if (Game.Board.isdead) { res.moves = new string[] { "oraora" }; return res; }
             if (end) { res.moves = new string[] { "oraora" }; return res; }
             bool craasshh = false;
+            // Console.WriteLine("获取数据之前");
             Configuration config = System.Configuration.ConfigurationManager.OpenExeConfiguration("zzztetr.exe");
             await Task.Run(() =>
             {
@@ -140,17 +141,18 @@ namespace zzztetr
                     Console.WriteLine(new string(nsq)); // next表
                     //Game.Board.console_print(false);
                     char* input = null;
-                    
-                    try { 
+                    // Console.WriteLine("要调用了");
+                     { 
                     input = ZZZTOJcore.TetrisAI(field2, field1, 10, 22, (Game.Board.isb2b ? 1 : 0),
                         Game.Board.combo, nsq, (Game.Board.holdpiece == null ? ' ' : Game.Board.holdpiece.name[0]),
                         true, Game.Board.piece.name[0], 3, 0, 0, true, false, ids, Game.gamerule.ren, nextcnt, level, 0); // 调用zzz
                     }
-                    catch
-                    {
-                        craasshh = true;
-                        res.moves = new string[] { "oraora" };
-                    }
+                    // catch
+                    // {
+                    //     craasshh = true;
+                    //     res.moves = new string[] { "oraora" };
+                    //     Console.WriteLine("zzz炸了");
+                    // }
                     if (craasshh) return; 
                     //Game.Board.console_print(true, Game.Board.piece);
                     string temp = "";

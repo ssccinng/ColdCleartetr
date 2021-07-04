@@ -102,10 +102,13 @@ namespace zzztetr.Controllers
             try { 
                 temp = await bot.zzz_toj.nextMove(ids);
             }
-            catch
+            catch (Exception e)
             {
+                // Console.WriteLine("I think gg");
+                Console.WriteLine(e);
                 return null;
             }
+            
             if (temp.moves.Length == 1 && temp.moves[0] == "oraora") return null;
             bot.zzz_toj.calumove = false;
             return temp;
@@ -161,7 +164,7 @@ namespace zzztetr.Controllers
         {
             await Task.Run(() =>
             {
-
+Console.WriteLine(string.Join(",", ids));
                 //bot.zzz_toj.newGame();
                 bot.zzz_toj.nextPieces(ids);
             });
@@ -200,14 +203,18 @@ namespace zzztetr.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async void Post([FromBody] dynamic gg)
+        public async void Post(string gg)
         {
             // Console.WriteLine(gg.GetRawText());
             // Console.WriteLine(gg.GetProperty("board"));
-            string [][] ids = JsonSerializer.Deserialize<string[][]>(gg.GetProperty("board").GetRawText());
-            
+            if (gg == null) return;
+            var g = JsonDocument.Parse(gg);
+            //string [][] ids = JsonSerializer.Deserialize<string[][]>(gg.GetProperty("board").GetRawText());
+            //g.RootElement.GetProperty("board").
+            string[][] ids = JsonSerializer.Deserialize<string[][]>(g.RootElement.GetProperty("board").ToString());
             System.Text.Json.JsonElement a = new System.Text.Json.JsonElement();
-            int cnt = gg.GetProperty("garbage").GetInt32();
+            int cnt = g.RootElement.GetProperty("garbage").GetInt32();
+            Console.WriteLine(cnt);
             await Task.Run(() =>
             {
                 //char[] ff = new char[400];
