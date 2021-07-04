@@ -94,7 +94,7 @@ namespace zzztetr.Controllers
         {
             resmove temp;
             //res.hold = true;
-            Console.WriteLine("upcot" + ids + "----");
+            // Console.WriteLine("upcot" + ids + "----");
             //Console.WriteLine("-------" + res.hold + "----");
             //res.moves = new string[] { "Left", "Left" };
             //Console.WriteLine(res.moves[0]);
@@ -164,7 +164,7 @@ namespace zzztetr.Controllers
         {
             await Task.Run(() =>
             {
-Console.WriteLine(string.Join(",", ids));
+// Console.WriteLine(string.Join(",", ids));
                 //bot.zzz_toj.newGame();
                 bot.zzz_toj.nextPieces(ids);
             });
@@ -203,18 +203,21 @@ Console.WriteLine(string.Join(",", ids));
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async void Post(string gg)
+        public async void Post([FromBody] JsonDocument gg)
         {
             // Console.WriteLine(gg.GetRawText());
             // Console.WriteLine(gg.GetProperty("board"));
             if (gg == null) return;
-            var g = JsonDocument.Parse(gg);
+            // Console.WriteLine(gg);
+            var g = gg;
+            // var g = JsonDocument.Parse(gg.ToString());
             //string [][] ids = JsonSerializer.Deserialize<string[][]>(gg.GetProperty("board").GetRawText());
             //g.RootElement.GetProperty("board").
             string[][] ids = JsonSerializer.Deserialize<string[][]>(g.RootElement.GetProperty("board").ToString());
             System.Text.Json.JsonElement a = new System.Text.Json.JsonElement();
             int cnt = g.RootElement.GetProperty("garbage").GetInt32();
-            Console.WriteLine(cnt);
+            // Console.WriteLine("-----------------------------------------------------------------");
+            // Console.WriteLine("garbage = " + cnt);
             await Task.Run(() =>
             {
                 //char[] ff = new char[400];
@@ -233,6 +236,7 @@ Console.WriteLine(string.Join(",", ids));
 
                 bot.zzz_toj.resetBoard(ff);
                 bot.zzz_toj.updategar(cnt);
+
             });
         }
     }

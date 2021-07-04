@@ -138,7 +138,7 @@ namespace zzztetr
                     //Console.WriteLine(Game.Board.piece.name[0]);
                     //if (Game.Board.holdpiece!= null) Game.Board.holdpiece.console_print();
                     //Game.Board.piece.console_print();
-                    Console.WriteLine(new string(nsq)); // next表
+                    Console.WriteLine("输入ZZZ的Next => " + new string(nsq)); // next表
                     //Game.Board.console_print(false);
                     char* input = null;
                     // Console.WriteLine("要调用了");
@@ -159,7 +159,7 @@ namespace zzztetr
                     //char* aChar = (char*)System.Runtime.InteropServices.Marshal.StringToHGlobalAnsi(input).ToPointer();
                     string result = Marshal.PtrToStringAnsi((IntPtr)input);
 
-                    Console.WriteLine(result);
+                    Console.WriteLine("ZZZ输出的结果 => " + result);
 
                     //while (true)
                     foreach (char m in result)
@@ -224,8 +224,8 @@ namespace zzztetr
                         //input++;
                     }
                     
-                    Console.WriteLine("x = " + Game.Board.piece.minopos.x);
-                    Console.WriteLine("y = " + Game.Board.piece.minopos.y);
+                    // Console.WriteLine("x = " + Game.Board.piece.minopos.x);
+                    // Console.WriteLine("y = " + Game.Board.piece.minopos.y);
 
                     int midx = 0;
                     res.expected_cells = new int[4][];
@@ -261,16 +261,16 @@ namespace zzztetr
             {
                 long nowtime = DateTime.Now.Ticks;
                 double spend = (nowtime - starttime) / 10000;
-                Console.WriteLine("spend = " + spend);
-                Console.WriteLine("pbs = " + pbs);
-                Console.WriteLine("idx = " + idx1);
+                // Console.WriteLine("spend = " + spend);
+                // Console.WriteLine("pbs = " + pbs);
+                // Console.WriteLine("idx = " + idx1);
                 
 
                 pbs = 60.0 / int.Parse(config.AppSettings.Settings["bpm"].Value);
                 
 
                 int qq = (int)((pbs * idx1) * 1000 - spend);
-                Console.WriteLine("spend = " + qq);
+                // Console.WriteLine("spend = " + qq);
                 if (qq > 0&& !end) Thread.Sleep(qq);
             }
             if (end) { res.moves = new string[] { "oraora" }; return res; }
@@ -299,6 +299,7 @@ namespace zzztetr
                 //    ff[i % 10, i / 10] = field[i];
                 //}
                 Game.Board.reset(field, Game.Board.isb2b, Game.Board.combo);
+                Game.Board.console_print(false);
                 //Game.Board.console_print(false);
                 //Game.Board.piece.setpos(19, 3);
             });
