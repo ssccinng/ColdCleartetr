@@ -38,7 +38,7 @@ namespace Jura_Knife_Tetris
             }
         }
         public int GetTspindmg(int idx) => Tspin[idx];
-        public int Getcleardmg(int idx) => clear[idx];
+        public int Getcleardmg(int idx) => clear[0];
     }
 
     

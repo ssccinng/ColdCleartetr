@@ -169,7 +169,7 @@ namespace zzztetr.Controllers
                 bot.zzz_toj.nextPieces(ids);
             });
             //return new string[] { "46", "5446" };
-
+            Console.WriteLine("新的一局开始了！");
         }
     }
     [Produces(MediaTypeNames.Application.Json)]
@@ -191,6 +191,7 @@ namespace zzztetr.Controllers
                 Thread.Sleep(500);
                 bot.zzz_toj.newGame();
             });
+            Console.WriteLine("一局完了！");
             //return poststring.ToString();
         }
     }
