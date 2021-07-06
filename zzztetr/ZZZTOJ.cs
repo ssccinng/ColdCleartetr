@@ -29,7 +29,7 @@ namespace zzztetr
         double pbs;
         int idx1;
 
-
+        bool willreset = false;
         public ZZZTOJ()
         {
             Game = new Jura_Knife_Tetris.game();
@@ -109,16 +109,7 @@ namespace zzztetr
                     }
 
                 }
-                //for (int i = 0; i < 17; ++i)
-                //{
-                //    for (int j = 0; j < 10; ++j)
-                //    {
-                //        field2[i - 22] <<= 1;
-                //        if (!Game.Board.checkfield(i, j)) field2[i - 22] |= 1;
-                //        if (Game.Board.checkfield(i, j)) field2[i - 22] |= (1 << j);
-                //    }
 
-                //}
                 unsafe
                 {
                     //char[] nsq = new char[Game.Board.Next_queue.Count];
@@ -145,7 +136,7 @@ namespace zzztetr
                      { 
                     input = ZZZTOJcore.TetrisAI(field2, field1, 10, 22, (Game.Board.isb2b ? 1 : 0),
                         Game.Board.combo, nsq, (Game.Board.holdpiece == null ? ' ' : Game.Board.holdpiece.name[0]),
-                        true, Game.Board.piece.name[0], 3, 0, 0, true, false, ids, Game.gamerule.ren, nextcnt, level, 0); // 调用zzz
+                        true, Game.Board.piece.name[0], 3, -1, 0, true, false, ids, Game.gamerule.ren, nextcnt, level, 0); // 调用zzz
                     }
                     // catch
                     // {
@@ -287,7 +278,7 @@ namespace zzztetr
         public async void resetBoard(int[,] field)
         {
 
-            while (calumove) Thread.Sleep(50);
+            // while (calumove) Thread.Sleep(50);
             //Console.WriteLine("重置！！！");
             reset = true;
             
